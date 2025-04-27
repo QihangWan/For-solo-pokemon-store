@@ -1,0 +1,18 @@
+# Django
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+db.sqlite3  # 忽略SQLite数据库文件
+*.sqlite3
+
+# IDE files
+.idea/
+*.code-workspace
+
+# Miscellaneous
+*.log

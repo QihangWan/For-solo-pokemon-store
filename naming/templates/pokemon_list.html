@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Pokémon Store</h1>
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <form method="get" action="{% url 'pokemon_list' %}">
+                <select name="category" class="form-select" onchange="this.form.submit()">
+                    <option value="real" {% if category == 'real' %}selected{% endif %}>Real Pokémon</option>
+                    <option value="virtual" {% if category == 'virtual' %}selected{% endif %}>Virtual Pokémon</option>
+                </select>
+                {% if category %}
+                <input type="hidden" name="q" value="{{ query }}">
+                <input type="hidden" name="type" value="{{ type_filter }}">
+                <input type="hidden" name="price_min" value="{{ request.GET.price_min }}">
+                <input type="hidden" name="price_max" value="{{ request.GET.price_max }}">
+                {% endif %}
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        {% for pokemon in page_obj %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if pokemon.sprite %}
+                <img src="{{ pokemon.sprite }}" alt="{{ pokemon.name }}" class="card-img-top mx-auto" style="width: 100px; height: 100px;">
+                {% else %}
+                <div class="card-img-top mx-auto text-center" style="width: 100px; height: 100px; line-height: 100px; color: #aaa;">
+                    No Image
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ pokemon.name }}</h5>
+                    <p class="card-text">Type: {{ pokemon.type }}</p>
+                    <p class="card-text">Price: ${{ pokemon.price }}</p>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'pokemon_detail' pokemon.pk %}" class="btn btn-primary">View Details</a>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'add_to_cart' pokemon.id %}" class="btn btn-success">Add to Cart</a>
+                        {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-secondary">Login to Add</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No Pokémon found.</p>
+        {% endfor %}
+    </div>
+
+    <!-- 分页导航 -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1{% if query %}&q={{ query }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if request.GET.price_min %}&price_min={{ request.GET.price_min }}{% endif %}{% if request.GET.price_max %}&price_max={{ request.GET.price_max }}{% endif %}{% if category %}&category={{ category }}{% endif %}">« First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if request.GET.price_min %}&price_min={{ request.GET.price_min }}{% endif %}{% if request.GET.price_max %}&price_max={{ request.GET.price_max }}{% endif %}{% if category %}&category={{ category }}{% endif %}">Previous</a>
+                </li>
+            {% endif %}
+
+            <li class="page-item disabled">
+                <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            </li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if request.GET.price_min %}&price_min={{ request.GET.price_min }}{% endif %}{% if request.GET.price_max %}&price_max={{ request.GET.price_max }}{% endif %}{% if category %}&category={{ category }}{% endif %}">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}{% if type_filter %}&type={{ type_filter }}{% endif %}{% if request.GET.price_min %}&price_min={{ request.GET.price_min }}{% endif %}{% if request.GET.price_max %}&price_max={{ request.GET.price_max }}{% endif %}{% if category %}&category={{ category }}{% endif %}">Last »</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

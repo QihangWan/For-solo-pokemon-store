@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Admin Dashboard</h1>
+<p>Total Orders: {{ total_orders }}</p>
+<p>Total Revenue: ${{ total_revenue }}</p>
+<canvas id="typeChart" width="400" height="200"></canvas>
+<script>
+    var ctx = document.getElementById('typeChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for stat in type_stats %}'{{ stat.type }}',{% endfor %}],
+            datasets: [{
+                label: 'Orders by Type',
+                data: [{% for stat in type_stats %}{{ stat.count }},{% endfor %}],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<h3>Recent Orders</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Pokémon</th>
+            <th>Date</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.user.username }}</td>
+            <td>
+                {% for pokemon in order.pokemons.all %}
+                    {{ pokemon.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+            <td>{{ order.order_date }}</td>
+            <td>{{ order.total_price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

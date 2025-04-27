@@ -1,0 +1,9 @@
+.card-img-top {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+}
+footer {
+    background-color: #f8f9fa;
+    padding: 10px;
+}

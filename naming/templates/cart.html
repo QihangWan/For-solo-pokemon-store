@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Your Cart</h2>
+    {% if cart_items %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Pokémon</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.pokemon.name }}</td>
+                <td>${{ item.pokemon.price }}</td>
+                <td>
+                    <form method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><strong>Total Price:</strong> ${{ total_price }}</p>
+    <div class="d-flex justify-content-between">
+        <a href="{% url 'pokemon_list' %}" class="btn btn-primary">Continue Shopping</a>
+        <a href="{% url 'checkout' %}" class="btn btn-success">Checkout</a>
+    </div>
+    {% else %}
+    <p>Your cart is empty.</p>
+    <a href="{% url 'pokemon_list' %}" class="btn btn-primary">Continue Shopping</a>
+    {% endif %}
+</div>
+{% endblock %}
