@@ -2,52 +2,50 @@
 {% block content %}
 <div class="container mt-4">
     <h1>Pokémon Store</h1>
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <form method="get" action="{% url 'pokemon_list' %}">
-                <select name="category" class="form-select" onchange="this.form.submit()">
-                    <option value="real" {% if category == 'real' %}selected{% endif %}>Real Pokémon</option>
-                    <option value="virtual" {% if category == 'virtual' %}selected{% endif %}>Virtual Pokémon</option>
-                </select>
-                {% if category %}
-                <input type="hidden" name="q" value="{{ query }}">
-                <input type="hidden" name="type" value="{{ type_filter }}">
-                <input type="hidden" name="price_min" value="{{ request.GET.price_min }}">
-                <input type="hidden" name="price_max" value="{{ request.GET.price_max }}">
-                {% endif %}
-            </form>
+    <!-- 比较表单 -->
+    <form method="get" action="{% url 'compare_pokemons' %}">
+        <!-- 将按钮移到列表上方 -->
+        <div class="row mt-3 mb-3">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-info">Compare Selected Pokémon</button>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        {% for pokemon in page_obj %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                {% if pokemon.sprite %}
-                <img src="{{ pokemon.sprite }}" alt="{{ pokemon.name }}" class="card-img-top mx-auto" style="width: 100px; height: 100px;">
-                {% else %}
-                <div class="card-img-top mx-auto text-center" style="width: 100px; height: 100px; line-height: 100px; color: #aaa;">
-                    No Image
-                </div>
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ pokemon.name }}</h5>
-                    <p class="card-text">Type: {{ pokemon.type }}</p>
-                    <p class="card-text">Price: ${{ pokemon.price }}</p>
-                    <div class="d-flex justify-content-between">
-                        <a href="{% url 'pokemon_detail' pokemon.pk %}" class="btn btn-primary">View Details</a>
-                        {% if user.is_authenticated %}
-                        <a href="{% url 'add_to_cart' pokemon.id %}" class="btn btn-success">Add to Cart</a>
-                        {% else %}
-                        <a href="{% url 'login' %}" class="btn btn-secondary">Login to Add</a>
-                        {% endif %}
+        <div class="row">
+            {% for pokemon in page_obj %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <!-- 添加复选框 -->
+                    <div class="form-check m-2">
+                        <input type="checkbox" name="pokemon_ids" value="{{ pokemon.id }}" class="form-check-input">
+                        <label class="form-check-label">Select to compare</label>
+                    </div>
+                    {% if pokemon.sprite %}
+                    <img src="{{ pokemon.sprite }}" alt="{{ pokemon.name }}" class="card-img-top mx-auto" style="width: 100px; height: 100px;">
+                    {% else %}
+                    <div class="card-img-top mx-auto text-center" style="width: 100px; height: 100px; line-height: 100px; color: #aaa;">
+                        No Image
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ pokemon.name }}</h5>
+                        <p class="card-text">Type: {{ pokemon.type }}</p>
+                        <p class="card-text">Price: ${{ pokemon.price }}</p>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'pokemon_detail' pokemon.pk %}" class="btn btn-primary">View Details</a>
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'add_to_cart' pokemon.id %}" class="btn btn-success">Add to Cart</a>
+                            {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-secondary">Login to Add</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
+            {% empty %}
+            <p>No Pokémon found.</p>
+            {% endfor %}
         </div>
-        {% empty %}
-        <p>No Pokémon found.</p>
-        {% endfor %}
-    </div>
+    </form>
 
     <!-- 分页导航 -->
     <nav aria-label="Page navigation">

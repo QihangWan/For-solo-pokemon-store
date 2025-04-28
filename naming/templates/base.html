@@ -17,7 +17,7 @@
                 {% if user.is_superuser %}
                     <a class="nav-link" href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
                 {% endif %}
-                <a class="nav-link" href="{% url 'cart_view' %}">Cart</a> <!-- 添加购物车链接 -->
+                <a class="nav-link" href="{% url 'cart_view' %}">Cart</a>
                 <a class="nav-link" href="{% url 'order_history' %}">My Orders</a>
                 <a class="nav-link" href="{% url 'logout' %}">Logout</a>
             {% else %}
@@ -26,14 +26,19 @@
             {% endif %}
         </div>
         <form class="d-flex ms-auto" method="get" action="{% url 'pokemon_list' %}">
-          <input class="form-control me-2" type="text" name="q" placeholder="Search Pokémon">
-          <input class="form-control me-2" type="number" name="price_min" placeholder="Min Price" step="0.01">
-          <input class="form-control me-2" type="number" name="price_max" placeholder="Max Price" step="0.01">
-          <input class="form-control me-2" type="number" name="lat_min" placeholder="Min Latitude" step="0.01">
-          <input class="form-control me-2" type="number" name="lat_max" placeholder="Max Latitude" step="0.01">
-          <input class="form-control me-2" type="number" name="lon_min" placeholder="Min Longitude" step="0.01">
-          <input class="form-control me-2" type="number" name="lon_max" placeholder="Max Longitude" step="0.01">
-          <button class="btn btn-outline-success" type="submit">Search</button>
+            <!-- 添加分类选择 -->
+            <select name="category" class="form-select me-2" onchange="this.form.submit()">
+                <option value="real" {% if request.GET.category == 'real' %}selected{% endif %}>Real Pokémon</option>
+                <option value="virtual" {% if request.GET.category == 'virtual' %}selected{% endif %}>Virtual Pokémon</option>
+            </select>
+            <input class="form-control me-2" type="text" name="q" placeholder="Search Pokémon" value="{{ request.GET.q }}">
+            <input class="form-control me-2" type="number" name="price_min" placeholder="Min Price" step="0.01" value="{{ request.GET.price_min }}">
+            <input class="form-control me-2" type="number" name="price_max" placeholder="Max Price" step="0.01" value="{{ request.GET.price_max }}">
+            <input class="form-control me-2" type="number" name="lat_min" placeholder="Min Latitude" step="0.01" value="{{ request.GET.lat_min }}">
+            <input class="form-control me-2" type="number" name="lat_max" placeholder="Max Latitude" step="0.01" value="{{ request.GET.lat_max }}">
+            <input class="form-control me-2" type="number" name="lon_min" placeholder="Min Longitude" step="0.01" value="{{ request.GET.lon_min }}">
+            <input class="form-control me-2" type="number" name="lon_max" placeholder="Max Longitude" step="0.01" value="{{ request.GET.lon_max }}">
+            <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
     </nav>
     <div class="container mt-4">

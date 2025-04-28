@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Compare Pokémon</h2>
+    {% if pokemons %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Attribute</th>
+                {% for pokemon in pokemons %}
+                <th>{{ pokemon.name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Type</td>
+                {% for pokemon in pokemons %}
+                <td>{{ pokemon.type }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>Price</td>
+                {% for pokemon in pokemons %}
+                <td>${{ pokemon.price }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>Location (X, Y)</td>
+                {% for pokemon in pokemons %}
+                <td>{{ pokemon.location_x }}, {{ pokemon.location_y }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>Category</td>
+                {% for pokemon in pokemons %}
+                <td>{{ pokemon.category }}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+    <a href="{% url 'pokemon_list' %}" class="btn btn-primary">Back to List</a>
+    {% else %}
+    <p>No Pokémon selected for comparison.</p>
+    <a href="{% url 'pokemon_list' %}" class="btn btn-primary">Back to List</a>
+    {% endif %}
+</div>
+{% endblock %}

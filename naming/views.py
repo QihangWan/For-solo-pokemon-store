@@ -10,15 +10,13 @@ from .models import Pokemon, Order, Cart
 
 # 宝可梦列表视图（带分页、分类和位置范围搜索）
 def pokemon_list(request):
-    # 获取分类参数
     category = request.GET.get('category', 'real')
     print(f"Category: {category}")
-    pokemons = Pokemon.objects.filter(category=category).order_by('id')  # 添加 order_by('id') 排序
+    pokemons = Pokemon.objects.filter(category=category).order_by('id')
     print(f"Found {pokemons.count()} Pokémon for category {category}")
     print(f"Database path: {Pokemon.objects.db}")
     print(f"Database file: {connections['default'].settings_dict['NAME']}")
 
-    # 获取搜索参数
     query = request.GET.get('q', '')
     type_filter = request.GET.get('type', '')
     price_min = request.GET.get('price_min', '')
@@ -28,7 +26,6 @@ def pokemon_list(request):
     lon_min = request.GET.get('lon_min', '')
     lon_max = request.GET.get('lon_max', '')
 
-    # 应用搜索条件
     if query:
         pokemons = pokemons.filter(Q(name__icontains=query) | Q(type__icontains=query))
     if type_filter:
@@ -40,7 +37,6 @@ def pokemon_list(request):
     if lon_min and lon_max:
         pokemons = pokemons.filter(location_x__range=(lon_min, lon_max))
 
-    # 分页：每页100只宝可梦
     paginator = Paginator(pokemons, 100)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -150,3 +146,9 @@ def handler404(request, exception):
 # 500错误处理视图
 def handler500(request):
     return render(request, '500.html', status=500)
+
+# 比较宝可梦视图
+def compare_pokemons(request):
+    pokemon_ids = request.GET.getlist('pokemon_ids')
+    pokemons = Pokemon.objects.filter(id__in=pokemon_ids)
+    return render(request, 'compare.html', {'pokemons': pokemons})
