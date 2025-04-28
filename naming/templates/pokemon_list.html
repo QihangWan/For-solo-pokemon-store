@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
 <div class="container mt-4">
     <h1>Pokémon Store</h1>
     <!-- 比较表单 -->
@@ -19,13 +20,7 @@
                         <input type="checkbox" name="pokemon_ids" value="{{ pokemon.id }}" class="form-check-input">
                         <label class="form-check-label">Select to compare</label>
                     </div>
-                    {% if pokemon.sprite %}
-                    <img src="{{ pokemon.sprite }}" alt="{{ pokemon.name }}" class="card-img-top mx-auto" style="width: 100px; height: 100px;">
-                    {% else %}
-                    <div class="card-img-top mx-auto text-center" style="width: 100px; height: 100px; line-height: 100px; color: #aaa;">
-                        No Image
-                    </div>
-                    {% endif %}
+                    <img src="{% static 'sprites/'|add:pokemon.name|lower|add:'.png' %}" alt="{{ pokemon.name }}" class="card-img-top mx-auto" style="width: 100px; height: 100px;">
                     <div class="card-body">
                         <h5 class="card-title">{{ pokemon.name }}</h5>
                         <p class="card-text">Type: {{ pokemon.type }}</p>
