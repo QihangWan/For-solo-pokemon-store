@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import dj_database_url  # 添加这一行以支持 PostgreSQL
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -68,13 +69,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pokemon_store.wsgi.application'
 
-# 修改数据库配置，直接指定 SQLite 路径，移除 dj_database_url 依赖
+# 修改数据库配置，支持 SQLite（Codio）和 PostgreSQL（Heroku）
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# 如果有 DATABASE_URL 环境变量（Heroku 环境），使用 PostgreSQL
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 
 AUTH_PASSWORD_VALIDATORS = [
     {
