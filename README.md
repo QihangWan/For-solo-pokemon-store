@@ -68,7 +68,7 @@ python manage.py runserver 0.0.0.0:8000
 Open your browser and visit:
 
 ```
-http://localhost:8000/
+https://dialoginclude-tommylady-8000.codio-box.uk/
 ```
 
 ---
@@ -76,7 +76,7 @@ http://localhost:8000/
 ## Data Overview
 
 - **Real Pokémon**: 898 records (imported from PokéAPI)
-- **Virtual Pokémon**: 1,102 records (generated with Faker)
+- **Virtual Pokémon**: 6,102 records (generated with Faker)
 
 > **Note**: The project requires 2,000–7,000 records. Due to time constraints and cloud database limitations, the current dataset meets the minimum requirement.
 
@@ -145,9 +145,12 @@ Tests cover:
 
 ## Deployment
 
-The project is currently deployed on Codio:
+The project is currently deployed on Heroku:
 
-> **URL**: https://dialoginclude-tommylady-8000.codio-box.uk:8000/
+> **URL**: https://qihang-pokemon-store-7f7d47614400.herokuapp.com/
+
+The projcet is currently deployed on Github:
+https://github.com/QihangWan/For-solo-pokemon-store
 
 For production deployment (e.g., on Heroku):
 
