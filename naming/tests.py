@@ -5,9 +5,7 @@ from .models import Pokemon, Cart, Order
 
 class PokemonTests(TestCase):
     def setUp(self):
-        # 创建测试用户
         self.user = User.objects.create_user(username='testuser', password='testpass')
-        # 创建测试宝可梦
         self.pokemon = Pokemon.objects.create(
             name='Test Pokémon',
             type='fire',
@@ -26,7 +24,7 @@ class PokemonTests(TestCase):
     def test_add_to_cart(self):
         self.client.login(username='testuser', password='testpass')
         response = self.client.get(reverse('add_to_cart', args=[self.pokemon.id]))
-        self.assertEqual(response.status_code, 302)  # 重定向到列表页
+        self.assertEqual(response.status_code, 302)  
         self.assertTrue(Cart.objects.filter(user=self.user, pokemon=self.pokemon).exists())
 
     def test_cart_view(self):
@@ -40,7 +38,7 @@ class PokemonTests(TestCase):
         self.client.login(username='testuser', password='testpass')
         Cart.objects.create(user=self.user, pokemon=self.pokemon)
         response = self.client.get(reverse('checkout'))
-        self.assertEqual(response.status_code, 302)  # 重定向到列表页
+        self.assertEqual(response.status_code, 302)  
         self.assertTrue(Order.objects.filter(user=self.user).exists())
         self.assertFalse(Cart.objects.filter(user=self.user).exists())
 

@@ -8,7 +8,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from .models import Pokemon, Order, Cart
 
-# 宝可梦列表视图（带分页、分类和位置范围搜索）
 def pokemon_list(request):
     category = request.GET.get('category', 'real')
     print(f"Category: {category}")
@@ -50,7 +49,6 @@ def pokemon_list(request):
         'types': types
     })
 
-# 宝可梦详情视图
 def pokemon_detail(request, pk):
     pokemon = get_object_or_404(Pokemon, pk=pk)
     related = Pokemon.objects.filter(type=pokemon.type).exclude(pk=pk)[:3]
@@ -59,7 +57,6 @@ def pokemon_detail(request, pk):
         'related': related
     })
 
-# 订购宝可梦视图
 @login_required
 def order_pokemon(request, pk):
     pokemon = get_object_or_404(Pokemon, pk=pk)
@@ -69,14 +66,12 @@ def order_pokemon(request, pk):
         return redirect('pokemon_list')
     return render(request, 'order_form.html', {'pokemon': pokemon})
 
-# 添加宝可梦到购物车视图
 @login_required
 def add_to_cart(request, pokemon_id):
     pokemon = get_object_or_404(Pokemon, id=pokemon_id)
     Cart.objects.get_or_create(user=request.user, pokemon=pokemon)
     return redirect('pokemon_list')
 
-# 购物车视图
 @login_required
 def cart_view(request):
     cart_items = Cart.objects.filter(user=request.user)
@@ -88,7 +83,7 @@ def cart_view(request):
             return redirect('cart_view')
     return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
-# 结账视图
+
 @login_required
 def checkout(request):
     cart_items = Cart.objects.filter(user=request.user)
@@ -101,7 +96,7 @@ def checkout(request):
     cart_items.delete()
     return redirect('pokemon_list')
 
-# 管理员仪表板视图
+
 @user_passes_test(lambda u: u.is_superuser)
 def admin_dashboard(request):
     orders = Order.objects.all()
@@ -115,19 +110,18 @@ def admin_dashboard(request):
         'type_stats': type_stats
     })
 
-# 订单历史视图
+
 @login_required
 def order_history(request):
     orders = Order.objects.filter(user=request.user)
     return render(request, 'order_history.html', {'orders': orders})
 
-# 订单详情视图
+
 @login_required
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     return render(request, 'order_detail.html', {'order': order})
 
-# 用户注册视图
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -139,15 +133,12 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
 
-# 404错误处理视图
 def handler404(request, exception):
     return render(request, '404.html', status=404)
 
-# 500错误处理视图
 def handler500(request):
     return render(request, '500.html', status=500)
 
-# 比较宝可梦视图
 def compare_pokemons(request):
     pokemon_ids = request.GET.getlist('pokemon_ids')
     pokemons = Pokemon.objects.filter(id__in=pokemon_ids)

@@ -11,17 +11,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-# 修改 CSRF_TRUSTED_ORIGINS，添加 HTTP 版本，确保匹配请求来源
 CSRF_TRUSTED_ORIGINS = [
     'https://dialoginclude-tommylady-8000.codio-box.uk',
-    'http://dialoginclude-tommylady-8000.codio-box.uk',  # 添加 HTTP 版本
+    'http://dialoginclude-tommylady-8000.codio-box.uk',  
 ]
 
-# 禁用 CSRF_COOKIE_SECURE 和 SESSION_COOKIE_SECURE（开发环境）
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
 
-# 禁用缓存（开发环境）
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
@@ -68,7 +65,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pokemon_store.wsgi.application'
 
-# 修改数据库配置，直接指定 SQLite 路径，移除 dj_database_url 依赖
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
