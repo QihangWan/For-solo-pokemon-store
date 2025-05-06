@@ -1,0 +1,14 @@
+6677964b    QihangWan    Thu May 6 10:00:00 2025    Update README.md
+b60d902     QihangWan    Mon Apr 28 10:00:00 2025   Update pokemon_list.html
+2a55f61     QihangWan    Mon Apr 28 09:50:00 2025   Update pokemon_list.html
+cecaf60     QihangWan    Mon Apr 28 09:40:00 2025   Update requirements.txt
+2448ab1     QihangWan    Mon Apr 28 09:30:00 2025   Update requirements.txt
+beea804     QihangWan    Mon Apr 28 09:20:00 2025   Add data.json for migration
+a422559     QihangWan    Mon Apr 28 09:10:00 2025   Update settings.py
+e998f35     QihangWan    Mon Apr 28 09:00:00 2025   Update requirements.txt
+12c8599     QihangWan    Mon Apr 28 08:50:00 2025   Rename procfile to Procfile
+1363af6     QihangWan    Mon Apr 28 08:40:00 2025   Create procfile
+6f5b664     QihangWan    Mon Apr 28 08:30:00 2025   Update settings.py
+e7a7a79     QihangWan    Mon Apr 28 08:20:00 2025   Add Pokémon comparison feature with Compare Selected Pokémon button
+465823e     QihangWan    Sun Apr 27 10:00:00 2025   Rename ReadMe.md to README.md for GitHub standard
+ad3025f     QihangWan    Sun Apr 27 09:00:00 2025   Initial commit: Pokémon Store project (excluding db.sqlite3)
